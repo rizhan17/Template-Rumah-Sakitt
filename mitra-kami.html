@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitra Kami | RS Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        /* =====================================
+           0. CSS Variables & Reset
+           ===================================== */
+        :root {
+            --brand-color: #007bff; /* Biru Utama */
+            --accent-color: #ffc107; /* Kuning Aksen */
+            --bg-light: #f4f7f6;
+            --max-width: 1200px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =====================================
+           1. Navbar Styling (Dipertahankan)
+           ===================================== */
+        .navbar {
+            background-color: #fbfbfc;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand { font-size: 1.5em; font-weight: bold; }
+        .nav-list { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+        .nav-item { position: relative; }
+        .nav-link { padding: 10px 0; display: block; transition: color 0.3s; }
+        .nav-link:hover, .nav-item.active .nav-link { color: var(--brand-color); }
+        
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+            z-index: 10;
+            border-top: 3px solid var(--brand-color);
+        }
+        .nav-item:hover .submenu { display: block; }
+        .submenu-item a { color: #333; padding: 10px 20px; display: block; }
+        .submenu-item a:hover { background-color: #f1f1f1; color: var(--brand-color); }
+
+        /* =====================================
+           2. Header & Banner (Dipertahankan)
+           ===================================== */
+        .header-background {
+            /* Ganti gambar banner Mitra */
+            background-image: url('https://placehold.co/400x400');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .header-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 123, 255, 0.6); 
+            z-index: 1;
+        }
+        .header-background h1 {
+            font-size: 3em;
+            margin: 0;
+            z-index: 2;
+        }
+        
+        /* =====================================
+           3. Mitra Content Styling
+           ===================================== */
+        .mitra-section {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 5% 40px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #000001;
+            font-weight: 600;
+        }
+        
+        .mitra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mitra-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+            background-color: #fcfcfc;
+        }
+
+        .mitra-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--brand-color);
+        }
+
+        .mitra-logo-container {
+            width: 150px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .mitra-logo {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            filter: grayscale(100%); /* Membuat logo grayscale */
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+
+        .mitra-card:hover .mitra-logo {
+            filter: grayscale(0%); /* Warna penuh saat hover */
+            opacity: 1;
+        }
+
+        .mitra-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--brand-color);
+            margin-top: 5px;
+        }
+        .mitra-type {
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+        
+        /* Keterangan Tambahan */
+        .keterangan-mitra {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border-left: 5px solid var(--accent-color);
+            border-radius: 5px;
+        }
+        .keterangan-mitra p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================
+           4. Footer Styling (Dipertahankan)
+           ===================================== */
+        .footer {
+            background-color: #0b0c0e; 
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        .footer-col {
+            flex: 1 1 200px;
+        }
+        .footer-col h4 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 1.5em;
+            color: white;
+        }
+        .mitra-logo-footer { /* Mengganti nama kelas agar tidak bentrok */
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+
+        /* =====================================
+           5. Responsive (Dipertahankan)
+           ===================================== */
+        @media (max-width: 992px) {
+            .nav-list { display: none; }
+            .navbar { justify-content: center; }
+            .header-background { height: 200px; }
+            .header-background h1 { font-size: 2em; }
+            .section-title { font-size: 2em; }
+            .footer-content { flex-direction: column; align-items: center; text-align: center; }
+            .footer-col { text-align: center !important; margin-bottom: 20px; }
+        }
+        @media (max-width: 576px) {
+             .mitra-grid {
+                grid-template-columns: 1fr; /* Satu kolom di HP */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="navbar-brand">RS Demo</a>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link">Beranda</a></li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Pelayanan</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="igd.html">IGD</a></li>
+                        <li class="submenu-item"><a href="rawat1.html">Rawat inap</a></li>
+                        <li class="submenu-item"><a href="rawat2.html">Rawat Jalan</a></li>
+                        <li class="submenu-item"><a href="radiologi.html">Radiologi</a></li>
+                        <li class="submenu-item"><a href="laboratorium.html">Laboratorium</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="dokter.html" class="nav-link">Cari Dokter</a></li>
+                    
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Berita</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="kategori-berita.html">Kategori Berita</a></li>
+                        <li class="submenu-item"><a href="berita.html">Berita</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Fasilitas</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="fasilitas-unggulan.html">Fasilitas Unggulan</a></li>
+                        <li class="submenu-item"><a href="fasilitas-lainya.html">Fasilitas lainnya</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">RS Demo</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="tentang-kami.html">Tentang Kami</a></li>
+                        <li class="submenu-item"><a href="galeri.html">Galeri</a></li>
+                        <li class="submenu-item"><a href="mitra-kami.html">Mitra Kami</a></li>
+                        <li class="submenu-item"><a href="faq.html">FAQ</a></li>
+                        <li class="submenu-item"><a href="syarat&ketentuan.html">Syarat & Ketentuan</a></li>
+                        <li class="submenu-item"><a href="kebijakan-privasi.html">Kebijakan Privasi</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="karir.html" class="nav-link">Karir</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="header-background">
+        <h1></h1>
+    </div>
+
+    <main class="mitra-section">
+        <h2 class="section-title">Asuransi, Perusahaan, dan Institusi Rekanan</h2>
+        
+        <div class="mitra-grid">
+            
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=BPJS+Kesehatan" alt="Logo BPJS Kesehatan" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">BPJS Kesehatan</div>
+                    <div class="mitra-type">Asuransi Nasional</div>
+                </div>
+            </div>
+
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=Admedika" alt="Logo Admedika" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">Admedika</div>
+                    <div class="mitra-type">Third Party Administrator (TPA)</div>
+                </div>
+            </div>
+
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=Fullerton+Health" alt="Logo Fullerton Health" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">Fullerton Health</div>
+                    <div class="mitra-type">Third Party Administrator (TPA)</div>
+                </div>
+            </div>
+            
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=BRI+Bank" alt="Logo Bank BRI" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">Bank Rakyat Indonesia (BRI)</div>
+                    <div class="mitra-type">Layanan Kesehatan Perusahaan</div>
+                </div>
+            </div>
+            
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=Mandiri+Inhealth" alt="Logo Mandiri Inhealth" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">Mandiri Inhealth</div>
+                    <div class="mitra-type">Asuransi Swasta</div>
+                </div>
+            </div>
+            
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=Astra+Life" alt="Logo Astra Life" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">Astra Life</div>
+                    <div class="mitra-type">Asuransi Swasta</div>
+                </div>
+            </div>
+
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=PT.+Makmur+Abadi" alt="Logo PT Makmur Abadi" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">PT Makmur Abadi</div>
+                    <div class="mitra-type">Perusahaan Rekanan</div>
+                </div>
+            </div>
+            
+            <div class="mitra-card">
+                <div class="mitra-logo-container">
+                    <img src="https://via.placeholder.com/150x80?text=YAYASAN+BINA+BANGSA" alt="Logo Yayasan Bina Bangsa" class="mitra-logo">
+                </div>
+                <div class="mitra-info">
+                    <div class="mitra-title">Yayasan Bina Bangsa</div>
+                    <div class="mitra-type">Institusi Pendidikan</div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="keterangan-mitra">
+            <p><strong>Perhatian:</strong> Untuk memastikan layanan asuransi/perusahaan Anda dapat digunakan, mohon konfirmasi kelengkapan administrasi dan cakupan jaminan kepada staf kami sebelum melakukan pendaftaran layanan atau rawat inap.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            
+            <div class="footer-col">
+                <h4>Temukan Kami</h4>
+                <p>Jl. Raya Timur III No.875, Dawuan, Kec. Dawuan, Kabupaten Majalengka, Jawa Barat 45453</p>
+                <div class="social-icons" style="margin-top: 15px;">
+                    <a href="https://facebook.com/rsulivasya" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://twitter.com/rsulivasya" title="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="https://instagram.com/rsulivasya" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="https://youtube.com/rsulivasya" title="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col contact-info" style="text-align: right;">
+                <h4>Hubungi Kami</h4>
+                <a href="tel:+6281211151300">+6281211151300</a>
+                <a href="tel:(0233)8668019">(0233) 8668019</a>
+                <a href="mailto:contact@livasya.com">contact@livasya.com</a>
+            </div>
+
+            <div class="footer-col" style="text-align: right;">
+                <h4>Mitra Kami</h4>
+                <img src="https://via.placeholder.com/80x40?text=BPJS" alt="BPJS Kesehatan" class="mitra-logo-footer">
+                <img src="https://via.placeholder.com/80x40?text=ADMEDIKA" alt="Admedika" class="mitra-logo-footer">
+                <img src="https://via.placeholder.com/80x40?text=FULLERTON" alt="Fullerton" class="mitra-logo-footer">
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8em; opacity: 0.8;">
+            &copy; 2025 created by Team IT Livasya | all rights reserved. (Mockup)
+        </div>
+    </footer>
+
+</body>
+</html>

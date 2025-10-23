@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fasilitas Unggulan | RS Demo</title>
+    <style>
+        /* --- CSS Umum dan Navbar (Dipertahankan sama) --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6; 
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .navbar {
+            background-color: #f6f8fb;
+            color: rgb(18, 18, 18);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            padding: 10px 0;
+            display: block;
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: #ffc107;
+        }
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+            z-index: 10;
+        }
+        .nav-item:hover .submenu {
+            display: block;
+        }
+        .submenu-item a {
+            color: #333;
+            padding: 10px 20px;
+            display: block;
+        }
+        .submenu-item a:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        /* --- Header Background Besar --- */
+        .header-background {
+            background-image: url('https://placehold.co/400x400');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+           
+            margin-bottom: 30px;
+        }
+        .header-background h1 {
+            font-size: 2.5em;
+            margin: 0;
+            padding: 15px 30px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+        
+        /* --- Konten Utama (Desain Livasya - Terpusat) --- */
+        .main-content-centered {
+            padding: 0 5% 40px;
+            max-width: 1000px; /* Diperlebar sedikit untuk 2 kolom besar */
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-block h2 {
+            color: #007bff;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        /* Tata Letak 2 Kolom (Kanan & Kiri) */
+        .two-column-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Dua kolom dengan lebar sama */
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* Styling Kartu Interaktif */
+        .facility-card-large {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            text-align: center;
+            border-top: 5px solid #007bff; /* Garis pembeda */
+            cursor: pointer;
+        }
+        .facility-card-large:hover {
+            transform: translateY(-10px); /* Efek saat di-klik/hover */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            background-color: #e9f5ff;
+        }
+        
+        .facility-card-large h3 {
+            font-size: 1.8em;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        .facility-card-large p.description {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.6;
+            margin: 15px 0 20px;
+        }
+        .facility-card-large .read-more {
+            font-weight: bold;
+            color: #28a745; /* Warna hijau untuk link */
+            display: block;
+            margin-top: 10px;
+        }
+        .facility-card-large .icon {
+            font-size: 4em;
+            color: #ffc107;
+        }
+
+        /* --- Footer Styling (Dipertahankan sama) --- */
+        .footer {
+            background-color: #007bff; 
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-col {
+            flex: 1 1 200px;
+        }
+        .footer-col h4 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 1.5em;
+            color: white;
+        }
+        .mitra-logo {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+        .contact-info a {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="navbar-brand">RS Demo</a>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link">Beranda</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Pelayanan</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="igd.html">IGD</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">Rawat Jalan</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">Rawat inap</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">Radiologi</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">laboratorium</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="cari-dokter.html" class="nav-link">Cari Dokter</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="dokter.html"> Dokter</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="berita.html" class="nav-link">Berita</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="kategori-berita.html">Kategori Berita</a></li>
+                        <li class="submenu-item"><a href="berita.html"> Berita</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">Fasilitas</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="#fasilitas-unggulan.html">Fasilitas Unggulan</a></li>
+                        <li class="submenu-item"><a href="fasilitas-lainya.html">Fasilitas Lainnya</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Livasya</a>
+                    <ul class="submenu">
+                       <li class="submenu-item"><a href="tentang-kami.html">Tentang Kami</a></li>
+                        <li class="submenu-item"><a href="galeri.html.html">Galeri</a></li>
+                        <li class="submenu-item"><a href="mitra-kami.html.html">Mitra Kami</a></li>
+                        <li class="submenu-item"><a href="faq.html">FAQ</a></li>
+                        <li class="submenu-item"><a href="syarat&ketentuan.html.html">Syarat & Ketentuan</a></li>
+                        <li class="submenu-item"><a href="kebijakan-privasi.html.html">Kebijakan Privasi</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="karir.html" class="nav-link">Karir</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="header-background">
+        <h1></h1>
+    </div>
+
+    <main class="main-content-centered">
+        
+        <div class="content-block">
+            <h2>Layanan Unggulan RS Demo</h2>
+        </div>
+
+        <div class="two-column-grid">
+            
+            <a href="detail-rumah-vaksin.html" class="facility-card-large">
+                <div class="icon">💉</div>
+                <h3>RUMAH VAKSIN</h3>
+                <p class="description">
+                    Layanan terpadu yang menyediakan berbagai jenis vaksin lengkap untuk anak-anak hingga dewasa, didukung oleh tim medis profesional yang siap memberikan konsultasi dan jadwal imunisasi yang tepat.
+                </p>
+                <span class="read-more">Baca Selengkapnya →</span>
+            </a>
+
+            <a href="detail-formula-lvf.html" class="facility-card-large">
+                <div class="icon">💎</div>
+                <h3>FORMULA LVF</h3>
+                <p class="description">
+                    Formula LVF (Livasya VIP Family) adalah program keanggotaan premium yang menawarkan berbagai keuntungan eksklusif, termasuk diskon layanan, prioritas pendaftaran, dan fasilitas kamar VIP.
+                </p>
+                <span class="read-more">Baca Selengkapnya →</span>
+            </a>
+            
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Temukan Kami</h4>
+                <p>Jl. Raya Timur III No.875, Dawuan, Kec. Dawuan, Kabupaten Majalengka, Jawa Barat 45453</p>
+                <div class="social-icons" style="margin-top: 15px;">
+                    <a href="https://facebook.com/rsulivasya" title="Facebook">f</a>
+                    <a href="https://twitter.com/rsulivasya" title="Twitter">t</a>
+                    <a href="https://instagram.com/rsulivasya" title="Instagram">i</a>
+                    <a href="https://youtube.com/rsulivasya" title="YouTube">y</a>
+                </div>
+            </div>
+            <div class="footer-col contact-info" style="text-align: right;">
+                <h4>Hubungi Kami</h4>
+                <a href="tel:+6281211151300">+6281211151300</a>
+                <a href="tel:(0233)8668019">(0233) 8668019</a>
+                <a href="mailto:contact@livasya.com">contact@livasya.com</a>
+            </div>
+            <div class="footer-col" style="text-align: right;">
+                <h4>Mitra Kami</h4>
+                <img src="https://via.placeholder.com/80x40?text=BPJS" alt="BPJS Kesehatan" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=ADMEDIKA" alt="Admedika" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=FULLERTON" alt="Fullerton" class="mitra-logo">
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8em; opacity: 0.8;">
+            &copy; 2025 created by Team IT Livasya | all rights reserved. (Mockup)
+        </div>
+    </footer>
+
+</body>
+</html>

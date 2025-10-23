@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami | RS Demo</title>
+    <style>
+        /* --- CSS Umum dan Navbar (Dipertahankan sama) --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .navbar {
+            background-color: #f7f3f3;
+            color: rgb(8, 7, 7);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            padding: 10px 0;
+            display: block;
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: #007bff;
+        }
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+            z-index: 10;
+        }
+        .nav-item:hover .submenu {
+            display: block;
+        }
+        .submenu-item a {
+            color: #333;
+            padding: 10px 20px;
+            display: block;
+        }
+        .submenu-item a:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        /* --- Konten Utama (Desain Livasya - Terpusat) --- */
+        .main-content-centered {
+            padding: 0 5% 40px;
+            max-width: 900px; /* Kembali ke lebar yang lebih nyaman untuk teks */
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-block {
+            margin-bottom: 40px;
+        }
+        .content-block h2 {
+            color: #007bff;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-size: 1.8em;
+            text-align: left;
+        }
+        .content-block p, .content-block ul {
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: #444;
+            text-align: justify;
+        }
+        
+        /* --- Bagian Kronologi Institusi --- */
+        .kronologi-item {
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 5px solid #007bff;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .kronologi-item h3 {
+            font-size: 1.5em;
+            color: #dc3545; /* Warna merah/berbeda untuk judul kronologi */
+            margin-top: 0;
+        }
+        .kronologi-item p.tahun {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #007bff;
+            margin: 5px 0 15px;
+            border-bottom: 1px dashed #ced4da;
+            padding-bottom: 10px;
+        }
+        .kronologi-item .item-photo {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 5px;
+            margin-top: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Bagian Visi, Misi, Motto (Dipertahankan) --- */
+        .vmm-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .vmm-box {
+            flex: 1;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .vmm-box:hover {
+            transform: translateY(-5px);
+        }
+        .vmm-box h3 {
+            font-size: 1.5em;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid;
+        }
+        .vmm-box p, .vmm-box ul {
+            font-size: 1em;
+            line-height: 1.6;
+            margin: 10px 0 0;
+            text-align: center;
+        }
+        .vmm-box ul {
+             list-style: none;
+             padding-left: 0;
+             text-align: left;
+             margin-top: 15px;
+        }
+        .visi-box {
+            background-color: #f0f8ff; border-top: 5px solid #007bff;
+        }
+        .visi-box h3 { border-bottom-color: #007bff; color: #007bff; }
+        .misi-box {
+            background-color: #fff8f0; border-top: 5px solid #ff9800;
+        }
+        .misi-box h3 { border-bottom-color: #ff9800; color: #ff9800; }
+        .motto-box {
+            background-color: #f0fff0; border-top: 5px solid #4caf50;
+        }
+        .motto-box h3 { border-bottom-color: #4caf50; color: #4caf50; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .vmm-container {
+                flex-direction: column; 
+            }
+        }
+        /* --- Footer Styling (Dipertahankan sama) --- */
+        .footer {
+            background-color: #007bff; 
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-col {
+            flex: 1 1 200px;
+        }
+        .footer-col h4 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 1.5em;
+            color: white;
+        }
+        .mitra-logo {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+        .contact-info a {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="navbar-brand">RS Demo</a>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link">Beranda</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Pelayanan</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="pelayanan/igd.html">IGD</a></li>
+                        <li class="submenu-item"><a href="pelayanan/rawat-jalan.html">Rawat Jalan</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="cari-dokter.html" class="nav-link">Cari Dokter</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="dokter.html">Lihat Semua Dokter</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="berita.html" class="nav-link">Berita</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="kategori-berita.html">Kategori Berita</a></li>
+                        <li class="submenu-item"><a href="berita.html">Semua Berita</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Fasilitas</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="fasilitas-unggulan.html">Fasilitas Unggulan</a></li>
+                       <li class="submenu-item"><a href="fasilitas-lainya.html">Fasilitas lainya</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">Livasya</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="tentang-kami.html">Tentang Kami</a></li>
+                        <li class="submenu-item"><a href="galeri.html">Galeri</a></li>
+                        <li class="submenu-item"><a href="mitra-kami.html">Mitra Kami</a></li>
+                        <li class="submenu-item"><a href="faq.html">FAQ</a></li>
+                        <li class="submenu-item"><a href="syarat&ketentuan.html">Syarat & Ketentuan</a></li>
+                        <li class="submenu-item"><a href="kebijakan-privasi.html">Kebijakan Privasi</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="karir.html" class="nav-link">Karir</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content-centered">
+        
+        <div class="content-block" style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-size: 2.5em; color: #343a40; margin-bottom: 10px;">Perjalanan RS Demo MAJALENGKA</h1>
+            <p style="font-size: 1.1em; color: #6c757d;">Dari Klinik Kecil hingga Rumah Sakit Rujukan Modern</p>
+        </div>
+
+        <div class="content-block kronologi-item">
+            <h3 style="color: #007bff;">RUMAH BERSALIN LIVASYA MEDIKA</h3>
+            <p class="tahun">Tahun 2018 - Awal Mula</p>
+            <p>Berawal dari kebutuhan akan layanan kesehatan ibu dan anak yang terjangkau, kami mendirikan Rumah Bersalin Livasya Medika. Fokus utama saat itu adalah persalinan yang aman dan perawatan pasca melahirkan dengan sentuhan kekeluargaan.</p>
+            <div class="item-photo" style="background-image: url('https://via.placeholder.com/900x200/a2d2ff/333?text=Foto+Gedung+Rumah+Bersalin');"></div>
+        </div>
+
+        <div class="content-block kronologi-item">
+            <h3 style="color: #28a745;">KLINIK UTAMA LIVASYA</h3>
+            <p class="tahun">Tahun 2020 - Peningkatan Kapasitas</p>
+            <p>Seiring meningkatnya permintaan, Rumah Bersalin berevolusi menjadi Klinik Utama Livasya. Layanan diperluas mencakup poliklinik spesialis dasar dan layanan rawat jalan yang lebih komprehensif, menandai transisi menuju fasilitas yang lebih besar.</p>
+            <div class="item-photo" style="background-image: url('https://via.placeholder.com/900x200/c3f7c3/333?text=Foto+Poli+Klinik+Utama');"></div>
+        </div>
+
+        <div class="content-block kronologi-item">
+            <h3 style="color: #ffc107;">RUMAH SAKIT IBU DAN ANAK LIVASYA</h3>
+            <p class="tahun">Tahun 2022 - Spesialisasi</p>
+            <p>Mencapai tahap akreditasi, kami resmi menjadi Rumah Sakit Ibu dan Anak (RSIA) Livasya. Fokus pada tumbuh kembang anak, kesehatan reproduksi wanita, dan persalinan modern (seperti ERACS) menjadi unggulan utama kami di tahap ini.</p>
+            <div class="item-photo" style="background-image: url('https://via.placeholder.com/900x200/ffe6aa/333?text=Foto+Kamar+Perawatan+Ibu+Anak');"></div>
+        </div>
+
+        <div class="content-block kronologi-item">
+            <h3 style="color: #dc3545;">RUMAH SAKIT LIVASYA</h3>
+            <p class="tahun">Tahun 2024 - Menjadi Rumah Sakit Umum Tipe C</p>
+            <p>Saat ini, RS Demo telah meningkatkan status menjadi Rumah Sakit Umum Tipe C. Dengan penambahan layanan IGD 24 jam, ICU, Hemodialisa, dan berbagai spesialisasi lainnya, kami siap menjadi rumah sakit rujukan utama untuk seluruh masyarakat.</p>
+            <div class="item-photo" style="background-image: url('https://via.placeholder.com/900x200/ff9a9a/333?text=Foto+Gedung+Baru+RS+Umum');"></div>
+        </div>
+
+        
+        <div class="content-block">
+            <h2 style="margin-bottom: 20px; text-align: center;">Visi, Misi, dan Motto Kami</h2>
+            <div class="vmm-container">
+                
+                <div class="vmm-box visi-box">
+                    <h3>VISI</h3>
+                    <p>Menjadi Rumah Sakit rujukan pilihan utama masyarakat Jawa Barat yang unggul dalam pelayanan, teknologi, dan manajemen modern.</p>
+                </div>
+
+                <div class="vmm-box misi-box">
+                    <h3>MISI</h3>
+                    <ul>
+                        <li><i style="color: #ff9800;">•</i> Memberikan pelayanan yang berbasis mutu dan keselamatan pasien.</li>
+                        <li><i style="color: #ff9800;">•</i> Meningkatkan kualitas SDM yang profesional.</li>
+                        <li><i style="color: #ff9800;">•</i> Mengembangkan fasilitas dan teknologi medis terkini.</li>
+                        <li><i style="color: #ff9800;">•</i> Menjalin kemitraan yang sinergis.</li>
+                    </ul>
+                </div>
+
+                <div class="vmm-box motto-box">
+                    <h3>MOTTO</h3>
+                    <p style="font-style: italic; font-weight: bold; font-size: 1.1em; color: #4caf50;">
+                        "Layanan PRIMA dengan Senyum Tulus"
+                    </p>
+                    <p>
+                        (Profesional, Ramah, Integritas, Mutu, Amanah)
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Temukan Kami</h4>
+                <p>Jl. Raya Timur III No.875, Dawuan, Kec. Dawuan, Kabupaten Majalengka, Jawa Barat 45453</p>
+                <div class="social-icons" style="margin-top: 15px;">
+                    <a href="https://facebook.com/rsulivasya" title="Facebook">f</a>
+                    <a href="https://twitter.com/rsulivasya" title="Twitter">t</a>
+                    <a href="https://instagram.com/rsulivasya" title="Instagram">i</a>
+                    <a href="https://youtube.com/rsulivasya" title="YouTube">y</a>
+                </div>
+            </div>
+            <div class="footer-col contact-info" style="text-align: right;">
+                <h4>Hubungi Kami</h4>
+                <a href="tel:+6281211151300">+6281211151300</a>
+                <a href="tel:(0233)8668019">(0233) 8668019</a>
+                <a href="mailto:contact@livasya.com">contact@livasya.com</a>
+            </div>
+            <div class="footer-col" style="text-align: right;">
+                <h4>Mitra Kami</h4>
+                <img src="https://via.placeholder.com/80x40?text=BPJS" alt="BPJS Kesehatan" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=ADMEDIKA" alt="Admedika" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=FULLERTON" alt="Fullerton" class="mitra-logo">
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8em; opacity: 0.8;">
+            &copy; 2025 created by Team IT Livasya | all rights reserved. (Mockup)
+        </div>
+    </footer>
+
+</body>
+</html>

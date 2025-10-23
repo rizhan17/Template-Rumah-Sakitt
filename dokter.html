@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tim Dokter | RS Demo</title>
+    <style>
+        /* =====================================
+           0. CSS Variables & Reset
+           ===================================== */
+        :root {
+            --brand-color: #007bff; /* Biru Utama */
+            --accent-color: #ffc107; /* Kuning Aksen */
+            --bg-light: #f4f7f6;
+            --max-width: 1200px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =====================================
+           1. Navbar Styling
+           ===================================== */
+        .navbar {
+            background-color: #fbfbfc;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand { font-size: 1.5em; font-weight: bold; }
+        .nav-list { list-style: none; margin: 0; padding: 0; display: flex; gap: 20px; }
+        .nav-item { position: relative; }
+        .nav-link { padding: 10px 0; display: block; transition: color 0.3s; }
+        .nav-link:hover, .nav-item.active .nav-link { color: var(--brand-color); }
+        
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+            z-index: 10;
+            border-top: 3px solid var(--brand-color);
+        }
+        .nav-item:hover .submenu { display: block; }
+        .submenu-item a { color: #333; padding: 10px 20px; display: block; }
+        .submenu-item a:hover { background-color: #f1f1f1; color: var(--brand-color); }
+
+        /* =====================================
+           2. Header & Banner
+           ===================================== */
+        .header-background {
+            /* Pastikan path gambar benar */
+            background-image: url('https://placehold.co/400x400');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        /* Overlay agar teks lebih jelas */
+        .header-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 123, 255, 0.4); 
+            z-index: 1;
+        }
+        .header-background h1 {
+            font-size: 3em;
+            margin: 0;
+            z-index: 2;
+        }
+        
+        /* =====================================
+           3. Dokter Section Styling
+           ===================================== */
+        .dokter-section {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 5% 40px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #000001;
+            font-weight: 600;
+        }
+        
+        /* Sub Judul Spesialisasi */
+        .spesialisasi-group {
+            margin-bottom: 50px;
+        }
+        .spesialisasi-group h3 {
+            font-size: 1.8em;
+            color: var(--brand-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .dokter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; /* Jarak antar kartu */
+        }
+        .dokter-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            /* Animasi Awal */
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        .dokter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Foto Bulat */
+        .dokter-img-container {
+            padding: 25px 20px 15px;
+        }
+        .dokter-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%; /* Membuat gambar menjadi bulat */
+            margin: 0 auto;
+            background-color: #e9ecef;
+            background-size: cover;
+            background-position: center;
+            border: 5px solid var(--brand-color); /* Garis tepi biru */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .dokter-info {
+            padding: 0 15px 20px;
+        }
+        .dokter-info h3 {
+            margin: 10px 0 5px;
+            font-size: 1.3em;
+            color: #000001;
+        }
+        .dokter-info p {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .btn-jadwal {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #333;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .btn-jadwal:hover {
+            background-color: #f1b60a;
+        }
+
+        /* =====================================
+           4. Footer Styling
+           ===================================== */
+        .footer {
+            background-color: #0b0c0e; 
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        .footer-col {
+            flex: 1 1 200px;
+        }
+        .footer-col h4 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        /* Mengubah kode font social media ke ikon standar */
+        .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 0; /* Sembunyikan 'f', 't', 'i', 'y' */
+            color: white;
+            position: relative;
+        }
+        .social-icons a::before {
+            font-family: 'Bootstrap Icons', sans-serif; /* Anggap sudah diimport */
+            font-size: 1.5rem;
+            content: 'f'; /* Placeholder, harus diganti dengan ikon sebenarnya */
+        }
+        .mitra-logo {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+
+        /* =====================================
+           5. Animasi Keyframes & Delay
+           ===================================== */
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Memberikan delay untuk animasi agar muncul satu per satu */
+        /* Total 23 Kartu */
+        .dokter-card:nth-child(1) { animation-delay: 0.1s; }
+        .dokter-card:nth-child(2) { animation-delay: 0.15s; }
+        .dokter-card:nth-child(3) { animation-delay: 0.2s; }
+        .dokter-card:nth-child(4) { animation-delay: 0.25s; }
+        .dokter-card:nth-child(5) { animation-delay: 0.3s; }
+        .dokter-card:nth-child(6) { animation-delay: 0.35s; }
+        .dokter-card:nth-child(7) { animation-delay: 0.4s; }
+        .dokter-card:nth-child(8) { animation-delay: 0.45s; }
+        .dokter-card:nth-child(9) { animation-delay: 0.5s; }
+        .dokter-card:nth-child(10) { animation-delay: 0.55s; }
+        .dokter-card:nth-child(11) { animation-delay: 0.6s; }
+        .dokter-card:nth-child(12) { animation-delay: 0.65s; }
+        .dokter-card:nth-child(13) { animation-delay: 0.7s; }
+        .dokter-card:nth-child(14) { animation-delay: 0.75s; }
+        .dokter-card:nth-child(15) { animation-delay: 0.8s; }
+        .dokter-card:nth-child(16) { animation-delay: 0.85s; }
+        .dokter-card:nth-child(17) { animation-delay: 0.9s; }
+        .dokter-card:nth-child(18) { animation-delay: 0.95s; }
+        .dokter-card:nth-child(19) { animation-delay: 1.0s; }
+        .dokter-card:nth-child(20) { animation-delay: 1.05s; }
+        .dokter-card:nth-child(21) { animation-delay: 1.1s; }
+        .dokter-card:nth-child(22) { animation-delay: 1.15s; }
+        .dokter-card:nth-child(23) { animation-delay: 1.2s; }
+
+        /* =====================================
+           6. Responsive
+           ===================================== */
+        @media (max-width: 992px) {
+            .nav-list {
+                display: none; /* Sembunyikan navbar di mobile/tablet kecil */
+            }
+            .navbar {
+                justify-content: center;
+            }
+            .header-background {
+                height: 200px;
+            }
+            .header-background h1 {
+                font-size: 2em;
+            }
+            .section-title {
+                font-size: 2em;
+            }
+            .dokter-grid {
+                grid-template-columns: 1fr 1fr; /* Dua kolom di tablet */
+            }
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-col {
+                text-align: center !important;
+                margin-bottom: 20px;
+            }
+        }
+        @media (max-width: 576px) {
+            .dokter-grid {
+                grid-template-columns: 1fr; /* Satu kolom di HP */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="navbar-brand">RS Demo</a>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link">Beranda</a></li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Pelayanan</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="igd.html">IGD</a></li>
+                        <li class="submenu-item"><a href="rawat1.html">Rawat inap</a></li>
+                        <li class="submenu-item"><a href="rawat2.html">Rawat Jalan</a></li>
+                        <li class="submenu-item"><a href="radiologi.html">Radiologi</a></li>
+                        <li class="submenu-item"><a href="laboratorium.html">Laboratorium</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="#dokter.html" class="nav-link">Cari Dokter</a></li>
+                    
+                <li class="nav-item">
+                <a href="#" class="nav-link">Berita</a>
+                <ul class="submenu">
+                    <li class="submenu-item"><a href="kategori-berita.html">Kategori Berita</a></li>
+                    <li class="submenu-item"><a href="berita.html">Berita</a></li>
+                 </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Fasilitas</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="fasilitas-unggulan.html">Fasilitas Unggulan</a></li>
+                        <li class="submenu-item"><a href="fasilitas-lainya.html">Fasilitas lainnya</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">RS Demo</a>
+                    <ul class="submenu">
+                       <li class="submenu-item"><a href="tentang-kami.html">Tentang Kami</a></li>
+                        <li class="submenu-item"><a href="galeri.html.html">Galeri</a></li>
+                        <li class="submenu-item"><a href="mitra-kami.html.html">Mitra Kami</a></li>
+                        <li class="submenu-item"><a href="faq.html">FAQ</a></li>
+                        <li class="submenu-item"><a href="syarat&ketentuan.html.html">Syarat & Ketentuan</a></li>
+                        <li class="submenu-item"><a href="kebijakan-privasi.html.html">Kebijakan Privasi</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="karir.html" class="nav-link">Karir</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="header-background">
+        <h1></h1>
+    </div>
+
+    <main class="dokter-section">
+        <h2 class="section-title">Temukan Dokter Spesialis & Umum</h2>
+        
+        <div class="spesialisasi-group">
+            <h3>Spesialis Obstetri & Ginekologi (3 Dokter)</h3>
+            <div class="dokter-grid">
+                
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Siti Aulia, Sp.OG</h3><p>Spesialis Kandungan</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Bayu Purnomo, Sp.OG</h3><p>Spesialis Kandungan</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Clara Naomi, Sp.OG</h3><p>Spesialis Kandungan</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                
+            </div>
+        </div>
+        
+        <div class="spesialisasi-group">
+            <h3>Spesialis Anak (2 Dokter)</h3>
+            <div class="dokter-grid">
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Daniel Bimo, Sp.A</h3><p>Spesialis Anak</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Eva Karunia, Sp.A</h3><p>Spesialis Anak</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+
+            </div>
+        </div>
+
+        <div class="spesialisasi-group">
+            <h3>Spesialis Penyakit Dalam (3 Dokter)</h3>
+            <div class="dokter-grid">
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Fajar Hidayat, Sp.PD</h3><p>Sp. Penyakit Dalam</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Gita Lestari, Sp.PD</h3><p>Sp. Penyakit Dalam</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Heru Santoso, Sp.PD</h3><p>Sp. Penyakit Dalam</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+            
+            </div>
+        </div>
+        
+        <div class="spesialisasi-group">
+            <h3>Spesialis Lainnya (6 Dokter)</h3>
+            <div class="dokter-grid">
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Irwan Mustofa, Sp.B</h3><p>Spesialis Bedah Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Jihan Ratna, Sp.THT-KL</h3><p>Sp. THT-KL</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Kemal Ari, Sp.KJ</h3><p>Spesialis Kejiwaan</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Lina Setia, Sp.P</h3><p>Spesialis Paru</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Made Wira, Sp.Rad</h3><p>Spesialis Radiologi</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Nita Putri, Sp.An</h3><p>Spesialis Anestesi</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Oscar Ananda, Sp.PK</h3><p>Sp. Patologi Klinik</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+            
+            </div>
+        </div>
+
+        <div class="spesialisasi-group">
+            <h3>Dokter Umum & Gigi (9 Dokter)</h3>
+            <div class="dokter-grid">
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>drg. Puspita Sari</h3><p>Dokter Gigi</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Rizky Adnan</h3><p>Dokter Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Sofia Zaskia</h3><p>Dokter Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Tommy Wira</h3><p>Dokter Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Ulin Nuha</h3><p>Dokter Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Vina Candrika</h3><p>Dokter Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Wahyu Budi</h3><p>Dokter Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+                <div class="dokter-card"><div class="dokter-img-container"><div class="dokter-img" style="background-image: url('https://placehold.co/400x400');"></div></div><div class="dokter-info"><h3>dr. Xena Putri</h3><p>Dokter Umum</p><a href="#" class="btn-jadwal">Lihat Jadwal</a></div></div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            
+            <div class="footer-col">
+                <h4>Temukan Kami</h4>
+                <p>Jl. Raya Timur III No.875, Dawuan, Kec. Dawuan, Kabupaten Majalengka, Jawa Barat 45453</p>
+                <div class="social-icons" style="margin-top: 15px;">
+                    <a href="https://facebook.com/rsulivasya" title="Facebook">f</a>
+                    <a href="https://twitter.com/rsulivasya" title="Twitter">t</a>
+                    <a href="https://instagram.com/rsulivasya" title="Instagram">i</a>
+                    <a href="https://youtube.com/rsulivasya" title="YouTube">y</a>
+                </div>
+            </div>
+
+            <div class="footer-col contact-info" style="text-align: right;">
+                <h4>Hubungi Kami</h4>
+                <a href="tel:+6281211151300">+6281211151300</a>
+                <a href="tel:(0233)8668019">(0233) 8668019</a>
+                <a href="mailto:contact@livasya.com">contact@livasya.com</a>
+            </div>
+
+            <div class="footer-col" style="text-align: right;">
+                <h4>Mitra Kami</h4>
+                <img src="https://via.placeholder.com/80x40?text=BPJS" alt="BPJS Kesehatan" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=ADMEDIKA" alt="Admedika" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=FULLERTON" alt="Fullerton" class="mitra-logo">
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8em; opacity: 0.8;">
+            &copy; 2025 created by Team IT Livasya | all rights reserved. (Mockup)
+        </div>
+    </footer>
+
+</body>
+</html>

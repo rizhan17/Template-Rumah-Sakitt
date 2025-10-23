@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fasilitas Lainnya | RS Demo</title>
+    <style>
+        /* --- CSS Umum dan Navbar (Dipertahankan sama) --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6; 
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .navbar {
+            background-color: #f7f9fc;
+            color: rgb(23, 22, 22);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            padding: 10px 0;
+            display: block;
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: #ffc107;
+        }
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+            z-index: 10;
+        }
+        .nav-item:hover .submenu {
+            display: block;
+        }
+        .submenu-item a {
+            color: #333;
+            padding: 10px 20px;
+            display: block;
+        }
+        .submenu-item a:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        /* --- Header Background Besar --- */
+        .header-background {
+            background-image: url('https://placehold.co/400x400');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header-background h1 {
+            font-size: 2.5em;
+            margin: 0;
+            padding: 15px 30px;
+            border-radius: 5px;
+        }
+        
+        /* --- Konten Utama (Desain Livasya - Terpusat) --- */
+        .main-content-centered {
+            padding: 0 5% 40px;
+            max-width: 1200px; 
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-block h2 {
+            color: #007bff;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        /* Tata Letak 6 Kolom (3 Kolom x 2 Baris) */
+        .six-column-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            /* Jarak antar kolom dan baris DITINGKATKAN */
+            gap: 50px; 
+            margin-top: 40px;
+        }
+
+        /* Styling Kartu Interaktif (Lebih kecil) */
+        .facility-card-small {
+            background-color: #fff;
+            /* Padding kartu DITINGKATKAN */
+            padding: 25px; 
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            text-align: center;
+            border-top: 4px solid #007bff;
+            cursor: pointer;
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .facility-card-small:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+            background-color: #e9f5ff;
+        }
+        
+        .facility-card-small .content {
+            flex-grow: 1; 
+        }
+
+        .facility-card-small h3 {
+            font-size: 1.3em; /* Judul sedikit diperbesar */
+            color: #007bff;
+            margin: 10px 0;
+        }
+        .facility-card-small p.description {
+            font-size: 0.95em; /* Deskripsi sedikit diperbesar */
+            color: #555;
+            line-height: 1.6;
+            margin: 10px 0 15px;
+        }
+        .facility-card-small .read-more {
+            font-weight: bold;
+            color: #28a745;
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .facility-card-small .icon {
+            font-size: 3.5em; /* Ikon diperbesar */
+            color: #ffc107;
+        }
+
+        /* Responsive Layout untuk Mobile */
+        @media (max-width: 768px) {
+            .six-column-grid {
+                grid-template-columns: 1fr; 
+                gap: 50px; /* Jarak mobile lebih kecil */
+                margin-top: 20px;
+            }
+            .main-content-centered {
+                padding: 20px;
+            }
+        }
+
+
+        /* --- Footer Styling (Dipertahankan sama) --- */
+        .footer {
+            background-color: #007bff; 
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-col {
+            flex: 1 1 200px;
+        }
+        .footer-col h4 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 1.5em;
+            color: white;
+        }
+        .mitra-logo {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+        .contact-info a {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="navbar-brand">RS Demo</a>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link">Beranda</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Pelayanan</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="igd.html">IGD</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">Rawat Jalan</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">Rawat inap</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">Radiologi</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">laboratorium</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="cari-dokter.html" class="nav-link">Cari Dokter</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="dokter.html">Dokter</a></li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="berita.html" class="nav-link">Berita</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="kategori-berita.html">Kategori Berita</a></li>
+                        <li class="submenu-item"><a href="berita.html"> Berita</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">Fasilitas</a>
+                    <ul class="submenu">
+                         <li class="submenu-item"><a href="fasilitas-unggulan.html">Fasilitas Unggulan</a></li>
+                        <li class="submenu-item"><a href="#fasilitas-lainya.html">Fasilitas Lainnya</a></li>
+                        </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Livasya</a>
+                    <ul class="submenu">
+                       <li class="submenu-item"><a href="tentang-kami.html">Tentang Kami</a></li>
+                        <li class="submenu-item"><a href="galeri.html.html">Galeri</a></li>
+                        <li class="submenu-item"><a href="mitra-kami.html.html">Mitra Kami</a></li>
+                        <li class="submenu-item"><a href="faq.html">FAQ</a></li>
+                        <li class="submenu-item"><a href="syarat&ketentuan.html.html">Syarat & Ketentuan</a></li>
+                        <li class="submenu-item"><a href="kebijakan-privasi.html.html">Kebijakan Privasi</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="karir.html" class="nav-link">Karir</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="header-background">
+        <h1></h1>
+    </div>
+
+    <main class="main-content-centered">
+        
+        <div class="content-block">
+            <h2>Layanan Penunjang Medis dan Non-Medis</h2>
+        </div>
+
+        <div class="six-column-grid">
+            
+            <a href="detail-rehab.html" class="facility-card-small">
+                <div class="content">
+                    <div class="icon">🤸</div>
+                    <h3>Rehabilitasi Medis</h3>
+                    <p class="description">
+                        Layanan fisioterapi, okupasi, dan terapi wicara untuk pemulihan pasien pasca-operasi atau cedera saraf/otot.
+                    </p>
+                </div>
+                <span class="read-more">Baca Selengkapnya →</span>
+            </a>
+
+            <a href="detail-hemodialisa.html" class="facility-card-small">
+                <div class="content">
+                    <div class="icon">💧</div>
+                    <h3>Unit Hemodialisa</h3>
+                    <p class="description">
+                        Fasilitas cuci darah modern dan nyaman dengan jadwal rutin, didukung oleh tim nefrologi profesional.
+                    </p>
+                </div>
+                <span class="read-more">Baca Selengkapnya →</span>
+            </a>
+            
+            <a href="detail-poli-eksekutif.html" class="facility-card-small">
+                <div class="content">
+                    <div class="icon">🛎</div>
+                    <h3>Poli Eksekutif</h3>
+                    <p class="description">
+                        Layanan rawat jalan dengan waktu tunggu minimal dan ruang konsultasi yang lebih privat dan eksklusif.
+                    </p>
+                </div>
+                <span class="read-more">Baca Selengkapnya →</span>
+            </a>
+
+            <a href="detail-ambulans.html" class="facility-card-small">
+                <div class="content">
+                    <div class="icon">🚑</div>
+                    <h3>Ambulans 24 Jam</h3>
+                    <p class="description">
+                        Layanan transportasi darurat pasien yang dilengkapi peralatan medis dan staf paramedis bersertifikasi.
+                    </p>
+                </div>
+                <span class="read-more">Baca Selengkapnya →</span>
+            </a>
+            
+            <a href="detail-kantin.html" class="facility-card-small">
+                <div class="content">
+                    <div class="icon">☕</div>
+                    <h3>Kantin & Kafetaria</h3>
+                    <p class="description">
+                        Tempat makan dan minum yang bersih dan nyaman bagi pengunjung dan keluarga pasien selama di rumah sakit.
+                    </p>
+                </div>
+                <span class="read-more">Lihat Menu →</span>
+            </a>
+            
+            <a href="detail-mushola.html" class="facility-card-small">
+                <div class="content">
+                    <div class="icon">🕌</div>
+                    <h3>Mushola & Area Ibadah</h3>
+                    <p class="description">
+                        Tersedia area ibadah yang nyaman, bersih, dan memadai untuk semua pengunjung dan staf rumah sakit.
+                    </p>
+                </div>
+                <span class="read-more">Lihat Lokasi →</span>
+            </a>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Temukan Kami</h4>
+                <p>Jl. Raya Timur III No.875, Dawuan, Kec. Dawuan, Kabupaten Majalengka, Jawa Barat 45453</p>
+                <div class="social-icons" style="margin-top: 15px;">
+                    <a href="https://facebook.com/rsulivasya" title="Facebook">f</a>
+                    <a href="https://twitter.com/rsulivasya" title="Twitter">t</a>
+                    <a href="https://instagram.com/rsulivasya" title="Instagram">i</a>
+                    <a href="https://youtube.com/rsulivasya" title="YouTube">y</a>
+                </div>
+            </div>
+            <div class="footer-col contact-info" style="text-align: right;">
+                <h4>Hubungi Kami</h4>
+                <a href="tel:+6281211151300">+6281211151300</a>
+                <a href="tel:(0233)8668019">(0233) 8668019</a>
+                <a href="mailto:contact@livasya.com">contact@livasya.com</a>
+            </div>
+            <div class="footer-col" style="text-align: right;">
+                <h4>Mitra Kami</h4>
+                <img src="https://via.placeholder.com/80x40?text=BPJS" alt="BPJS Kesehatan" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=ADMEDIKA" alt="Admedika" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=FULLERTON" alt="Fullerton" class="mitra-logo">
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8em; opacity: 0.8;">
+            &copy; 2025 created by Team IT Livasya | all rights reserved. (Mockup)
+        </div>
+    </footer>
+
+</body>
+</html>

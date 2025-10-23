@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semua Berita | RS Demo</title>
+    <style>
+        /* --- CSS Umum dan Navbar (Dipertahankan sama) --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .navbar {
+            background-color: #eaf0f6;
+            color: rgb(19, 1, 1);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            padding: 10px 0;
+            display: block;
+            transition: color 0.3s;
+        }
+        .nav-link:hover, .nav-item.active .nav-link {
+            color: #007bff;
+        }
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+            z-index: 10;
+        }
+        .nav-item:hover .submenu {
+            display: block;
+        }
+        .submenu-item a {
+            color: #333;
+            padding: 10px 20px;
+            display: block;
+        }
+        .submenu-item a:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        /* --- Header Background Besar --- */
+        .header-background {
+            background-image: url('https://placehold.co/400x400');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+        }
+        .header-background h1 {
+            font-size: 2.5em;
+            margin: 0;
+            padding: 15px 30px;
+         
+            border-radius: 5px;
+        }
+        
+        /* --- Berita Section Styling --- */
+        .berita-section {
+            padding: 0 5% 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #007bff;
+            font-weight: 600;
+        }
+        .berita-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        /* Styling Kartu Berita */
+        .berita-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .berita-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .berita-thumbnail {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-color: #ccc;
+        }
+        
+        .berita-content {
+            padding: 20px;
+        }
+
+        .berita-meta {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .berita-meta .kategori {
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .berita-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: #333;
+            line-height: 1.4;
+        }
+        .berita-content p {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            /* Memotong teks setelah 3 baris */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .berita-readmore {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        /* --- Footer Styling (Dipertahankan sama) --- */
+        .footer {
+            background-color: #007bff; 
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-col {
+            flex: 1 1 200px;
+        }
+        .footer-col h4 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+        .footer-col p, .footer-col a {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 1.5em;
+            color: white;
+        }
+        .mitra-logo {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+            opacity: 0.8;
+        }
+        .contact-info a {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="navbar-brand">RS demo</a>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html" class="nav-link">Beranda</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Pelayanan</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="igd.html">IGD</a></li>
+                        <li class="submenu-item"><a href="rawat-jalan.html">Rawat Jalan</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="cari-dokter.html" class="nav-link">Cari Dokter</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="dokter.html">Lihat Semua Dokter</a></li>
+                        <li class="submenu-item"><a href="jadwal-dokter.html">Jadwal Dokter</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item active">
+                    <a href="berita.html" class="nav-link">Berita</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="kategori-berita.html">Kategori Berita</a></li>
+                        <li class="submenu-item"><a href="berita.html">Semua Berita</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Fasilitas</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="fasilitas-unggulan.html">Fasilitas Unggulan</a></li>
+                         <li class="submenu-item"><a href="fasilitas-lainya.html">Fasilitas lainnya</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">RS Demo</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="tentang.html">Tentang Kami</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="karir.html" class="nav-link">Karir</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="header-background">
+        <h1></h1>
+    </div>
+
+    <main class="berita-section">
+        <h2 class="section-title">Semua Artikel RS Demo (Halaman 1)</h2>
+        
+        <div class="berita-grid">
+            
+            <a href="artikel-detail-1.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Kesehatan Umum</span>
+                        <span>🗓 15 Oktober 2025</span>
+                    </div>
+                    <h3>Pentingnya Imunisasi Dasar untuk Kesehatan Anak Usia Dini</h3>
+                    <p>Imunisasi adalah langkah preventif yang krusial. Artikel ini membahas jadwal dan manfaat imunisasi dasar yang tersedia di RS Demo. Pastikan buah hati Anda terlindungi!...</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+
+            <a href="artikel-detail-2.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Layanan Livasya</span>
+                        <span>🗓 12 Oktober 2025</span>
+                    </div>
+                    <h3>Fasilitas Terbaru: USG 4 Dimensi di Poli Kandungan</h3>
+                    <p>RS Demo kini menghadirkan layanan USG 4D untuk pengalaman pemeriksaan kehamilan yang lebih detail dan interaktif bagi calon orang tua di Majalengka....</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+            <a href="artikel-detail-3.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Promosi & Event</span>
+                        <span>🗓 08 Oktober 2025</span>
+                    </div>
+                    <h3>[EVENT] Seminar Kesehatan Jantung Gratis Bersama Sp.JP</h3>
+                    <p>Jangan lewatkan seminar interaktif bersama dr. Bima, Sp.JP mengenai pencegahan penyakit jantung koroner. Daftar sekarang, kuota terbatas!...</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+
+            <a href="artikel-detail-4.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Dokter Kami</span>
+                        <span>🗓 01 Oktober 2025</span>
+                    </div>
+                    <h3>Selamat Datang Dokter Baru Spesialis Bedah Umum</h3>
+                    <p>Perkenalkan, dr. Irwan M., Sp.B, spesialis bedah umum yang kini bergabung dengan tim medis RS Demo untuk melayani Anda lebih baik....</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+            <a href="artikel-detail-5.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Teknologi Medis</span>
+                        <span>🗓 28 September 2025</span>
+                    </div>
+                    <h3>MRI Terbaru Mampu Deteksi Lebih Akurat</h3>
+                    <p>RS Demo mengupgrade mesin MRI dengan teknologi terbaru yang menawarkan resolusi gambar lebih tinggi dan waktu scan yang lebih cepat....</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+            <a href="artikel-detail-6.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Info COVID-19</span>
+                        <span>🗓 20 September 2025</span>
+                    </div>
+                    <h3>Pembaruan Protokol Kesehatan di Lingkungan Rumah Sakit</h3>
+                    <p>Meskipun pandemi mereda, kami tetap menjaga standar protokol kesehatan yang ketat untuk kenyamanan dan keamanan pasien....</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+            <a href="artikel-detail-7.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Kesehatan Umum</span>
+                        <span>🗓 10 September 2025</span>
+                    </div>
+                    <h3>Tips Menjaga Kualitas Tidur yang Optimal Setiap Malam</h3>
+                    <p>Kualitas tidur yang buruk dapat memengaruhi kesehatan secara keseluruhan. Pelajari tips dan trik dari dokter umum kami untuk tidur nyenyak....</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+            <a href="artikel-detail-8.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Layanan Livasya</span>
+                        <span>🗓 05 September 2025</span>
+                    </div>
+                    <h3>Pendaftaran Online: Lebih Cepat dan Anti Antri</h3>
+                    <p>Gunakan layanan pendaftaran online kami untuk memangkas waktu tunggu Anda. Pelayanan poliklinik kini bisa diakses dari mana saja....</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+            <a href="artikel-detail-9.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Promosi & Event</span>
+                        <span>🗓 28 Agustus 2025</span>
+                    </div>
+                    <h3>Diskon Pemeriksaan Gigi dan Mulut Akhir Bulan</h3>
+                    <p>Nikmati diskon khusus untuk layanan Scaling dan pemeriksaan rutin gigi oleh drg. Puspita S. Berlaku hingga akhir bulan ini!...</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+            <a href="artikel-detail-10.html" class="berita-card">
+                <div class="berita-thumbnail" style="background-image: url('https://placehold.co/400x400');"></div>
+                <div class="berita-content">
+                    <div class="berita-meta">
+                        <span class="kategori">Teknologi Medis</span>
+                        <span>🗓 15 Agustus 2025</span>
+                    </div>
+                    <h3>Sistem E-Rekam Medis: Data Pasien Lebih Aman</h3>
+                    <p>Implementasi sistem rekam medis elektronik menjamin data pasien terintegrasi, aman, dan mudah diakses oleh tim medis terkait....</p>
+                    <span class="berita-readmore">Baca Selengkapnya →</span>
+                </div>
+            </a>
+            
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="#" style="padding: 10px 15px; border: 1px solid #007bff; color: white; background-color: #007bff; border-radius: 4px;">1</a>
+            <a href="#" style="padding: 10px 15px; border: 1px solid #ccc; color: #333; margin-left: 5px; border-radius: 4px;">2</a>
+            <a href="#" style="padding: 10px 15px; border: 1px solid #ccc; color: #333; margin-left: 5px; border-radius: 4px;">3</a>
+            <a href="#" style="padding: 10px 15px; border: 1px solid #ccc; color: #333; margin-left: 5px; border-radius: 4px;">→</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Temukan Kami</h4>
+                <p>Jl. Raya Timur III No.875, Dawuan, Kec. Dawuan, Kabupaten Majalengka, Jawa Barat 45453</p>
+                <div class="social-icons" style="margin-top: 15px;">
+                    <a href="https://facebook.com/rsulivasya" title="Facebook">f</a>
+                    <a href="https://twitter.com/rsulivasya" title="Twitter">t</a>
+                    <a href="https://instagram.com/rsulivasya" title="Instagram">i</a>
+                    <a href="https://youtube.com/rsulivasya" title="YouTube">y</a>
+                </div>
+            </div>
+            <div class="footer-col contact-info" style="text-align: right;">
+                <h4>Hubungi Kami</h4>
+                <a href="tel:+6281211151300">+6281211151300</a>
+                <a href="tel:(0233)8668019">(0233) 8668019</a>
+                <a href="mailto:contact@livasya.com">contact@livasya.com</a>
+            </div>
+            <div class="footer-col" style="text-align: right;">
+                <h4>Mitra Kami</h4>
+                <img src="https://via.placeholder.com/80x40?text=BPJS" alt="BPJS Kesehatan" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=ADMEDIKA" alt="Admedika" class="mitra-logo">
+                <img src="https://via.placeholder.com/80x40?text=FULLERTON" alt="Fullerton" class="mitra-logo">
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 0.8em; opacity: 0.8;">
+            &copy; 2025 created by Team IT Livasya | all rights reserved. (Mockup)
+        </div>
+    </footer>
+
+</body>
+</html>

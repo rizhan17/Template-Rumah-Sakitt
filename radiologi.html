@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radiologi - RS Demo</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <style>
+    /* ====================================
+       0. CSS Variables & Reset
+       ==================================== */
+    :root{
+      --brand:#007bff; /* Biru Konsisten untuk RS */
+      --accent:#ffc107; /* Kuning Aksen */
+      --danger:#dc3545; /* Merah untuk IGD/Darurat */
+      --muted:#007bff;
+      --max-width:1200px;
+      --bg-light: #f4f7ff;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Poppins', sans-serif; background:var(--bg-light); color:#0f172a; line-height:1.6;}
+    a {text-decoration: none; color: inherit;}
+
+    /* ====================================
+       1. NAVBAR 
+       ==================================== */
+    .nav{
+      width:100%;
+      position:fixed;
+      top:0; left:0;
+      z-index:60;
+      background-color: white; 
+      box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    }
+    .nav-inner{
+      max-width:var(--max-width);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 20px;
+    }
+    .brand{
+      font-weight:700;
+      text-decoration:none;
+      color:var(--brand);
+      font-size:1.4rem;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .brand .logo {
+      width: 40px; 
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%; 
+      border: 2px solid var(--brand);
+    }
+    
+    .nav-links{display:flex;gap:18px;align-items:center;}
+    .nav-links a{text-decoration:none;color:#333;font-weight:500;padding:8px 12px;border-radius:8px;position:relative;}
+    .nav-links a:hover{color:var(--brand);background:rgba(0,123,255,0.06);}
+
+    .dropdown{position:relative;display:inline-block;}
+    .dropdown-content{
+      display:none;
+      position:absolute;
+      background:white;
+      box-shadow:0 4px 18px rgba(0,0,0,0.1);
+      border-radius:8px;
+      min-width:180px;
+      top:40px; left:0;
+      z-index:100;
+      border-top: 3px solid var(--brand);
+    }
+    .dropdown-content a{
+      display:block;
+      color:#333;
+      padding:10px 14px;
+      text-decoration:none;
+      border-radius:6px;
+      font-weight: normal;
+    }
+    .dropdown-content a:hover{background:rgba(0,123,255,0.06);color:var(--brand);}
+    .dropdown:hover .dropdown-content{display:block;}
+
+    /* ====================================
+       2. HERO
+       ==================================== */
+    .hero{
+      margin-top:60px;
+      height:40vh; 
+      /* Ganti gambar di sini jika perlu */
+      background-image: url('https://placehold.co/400x400');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(127, 143, 160, 0.797); /* Overlay BIRU */
+    }
+    .hero h1{
+      position:relative;
+      font-size:2.8rem;
+      text-shadow:0 2px 10px rgba(0,0,0,0.5);
+      z-index:1;
+    }
+    
+    /* ====================================
+       3. Konten (Quick Links Kiri, Deskripsi Bawah)
+       ==================================== */
+    
+    /* Wrapper baru untuk menengahkan konten */
+    .content-wrapper-center { 
+        max-width: var(--max-width);
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* Quick Links - Di KIRI */
+    .quick-links-container {
+        max-width: 350px; 
+        margin-left: 0; 
+        margin-right: auto; 
+        margin-bottom: 30px; 
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .quick-links-container h2 {
+        font-size: 1.4rem;
+        color: var(--brand);
+        margin-bottom: 15px;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 8px;
+    }
+
+    .service-link {
+      display: block;
+      padding: 12px 15px;
+      font-weight: 600;
+      color: #333;
+      transition: 0.3s;
+      border-left: 4px solid transparent;
+      margin-bottom: 5px;
+      background: var(--bg-light); 
+      border-radius: 6px;
+    }
+    .service-link:hover {
+      background: rgba(0, 123, 255, 0.1);
+      color: var(--brand);
+      border-left: 4px solid var(--brand);
+    }
+    
+    /* Styling khusus untuk Radiologi (halaman aktif) */
+    .service-link.active {
+        background: var(--brand); /* Menggunakan warna biru */
+        color: white;
+        border-left: 4px solid var(--accent);
+        pointer-events: none;
+    }
+    .service-link.active:hover {
+        background: var(--brand);
+        color: white;
+    }
+
+    /* Deskripsi - Di Tengah */
+    .content-description {
+        max-width: 800px; 
+        margin: 0 auto; 
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .description p {
+      font-size:1rem;
+      color:#374151;
+      line-height:1.8;
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+    
+    .description i {
+        /* Warna ikon di deskripsi diubah ke warna Brand (Biru) */
+        color: var(--brand); 
+    }
+
+
+    /* ====================================
+       4. FOOTER (Tidak Berubah)
+       ==================================== */
+    .footer {
+      background-color: #343a40; 
+      color: white;
+      padding: 30px 20px;
+      margin-top: 50px;
+    }
+    .footer-grid{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:30px;
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+    .footer-grid > div{flex:1 1 250px;}
+    .footer h4{margin-bottom:15px; color: var(--accent);}
+    .footer p {font-size: 0.9em; margin-bottom: 5px; color: #ccc;}
+    
+    .socials{margin-top:15px; display:flex; gap:10px;}
+    .socials a {color: white; font-size: 1.2em; transition: color 0.3s;}
+    .socials a:hover {color: var(--accent);}
+    .socials a i {font-size: 1.5rem;}
+
+    .copyright{
+      margin-top:20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.8rem;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ====================================
+       5. Responsive
+       ==================================== */
+    @media (max-width: 992px) {
+        .nav-links {
+            display: none; 
+        }
+        .nav-inner {
+            justify-content: center;
+        }
+        .hero {
+            height: 30vh;
+        }
+        .hero h1 {
+            font-size: 2rem;
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img src="https://images.unsplash.com/photo-1600180758890-2b1b8d4a5f9f?auto=format&fit=crop&w=200&q=60" alt="Logo RS Demo" class="logo">
+        <div class="name">RS Demo</div>
+      </a>
+      <nav class="nav-links">
+        <a class="nav-link" href="index.html">Beranda</a>
+
+          <div class="dropdown">
+            <a class="nav-link" href="#">Pelayanan</a>
+            <div class="dropdown-content">
+              <a href="igd.html" style="font-weight: bold; color: var(--danger);">IGD</a>
+              <a href="rawat1.html">Rawat Jalan</a>
+              <a href="rawat2.html">Rawat Inap </a>
+              <a href="radiologi.html" style="font-weight: bold; color: var(--brand);">Radiologi</a>
+              <a href="laboratorium.html">Laboratorium</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="dokter.html">Cari Dokter</a>
+            <div class="dropdown-content">
+              <a href="dokter.html">Dokter</a>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <a href="berita.html">Berita</a>
+            <div class="dropdown-content">
+              <a href="kategori-berita.html">Kategori Berita</a>
+              <a href="berita.html">Semua Berita</a>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <a href="#">Fasilitas</a>
+            <div class="dropdown-content">
+              <a href="fasilitas-unggulan.html">Fasilitas Unggulan</a>
+              <a href="fasilitas-lainya.html">Fasilitas Lainnya</a>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <a href="#">RS Demo</a>
+            <div class="dropdown-content">
+              <a href="tentang-.html">Tentang Kami</a>
+              <a href="galeri.html">Galeri</a>
+              <a href="mitra.html">Mitra Kami</a>
+              <a href="faq.html">FAQ</a>
+              <a href="syarat.html">Syarat & Ketentuan</a>
+              <a href="privasi.html">Kebijakan Privasi</a>
+            </div>
+          </div>
+              <a class="nav-link" href="karir.html" style="color: var(--brand); font-weight: 700; border: 1px solid var(--brand); border-radius: 5px;">Karir</a>
+        </nav>
+      </div>
+  </header>
+
+  <section class="hero"></section>
+    <h1>radiologi</h1>
+  </section>
+
+
+  <div class="content-wrapper-center">
+    
+    <div class="quick-links-container">
+      <h2>Pelayanan Kami</h2>
+      <a href="igd.html" class="service-link"><i class="bi bi-heart-pulse-fill" style="margin-right: 8px;"></i> IGD</a>
+      <a href="rawat1.html" class="service-link"><i class="bi bi-clipboard-check" style="margin-right: 8px;"></i> Rawat Jalan</a>
+      <a href="rawat2.html" class="service-link"><i class="bi bi-hospital" style="margin-right: 8px;"></i> Rawat Inap</a>
+      <a href="radiologi.html" class="service-link active"><i class="bi bi-radioactive" style="margin-right: 8px;"></i> Radiologi</a>
+      <a href="laboratorium.html" class="service-link"><i class="bi bi-activity" style="margin-right: 8px;"></i> Laboratorium</a>
+    </div>
+
+    <div class="content-description">
+        <div class="description">
+            <p>
+              <i class="bi bi-radioactive-fill" style="margin-right: 5px; color: var(--brand);"></i> *Instalasi Radiologi* RS Demo menyediakan berbagai layanan pencitraan medis untuk membantu dokter dalam mendiagnosis dan memantau kondisi pasien dengan akurat. Kami didukung oleh peralatan canggih dan tim radiolog profesional.
+            </p>
+            <p>
+              Pemeriksaan radiologi kami dilakukan dengan memperhatikan keamanan dan kenyamanan pasien, serta menghasilkan citra dengan kualitas tinggi untuk mendukung ketepatan diagnosis.
+            </p>
+            <p>
+              *Layanan Pemeriksaan Radiologi Kami Meliputi:*
+              <ul style="margin-left: 20px; list-style-type: square; color: var(--brand);">
+                <li style="color: #333;">Pemeriksaan Rontgen/X-Ray (Konvensional dan Digital)</li>
+                <li style="color: #333;">Ultrasonografi (USG 4D)</li>
+                <li style="color: #333;">Computed Tomography Scan (CT Scan 64 Slice)</li>
+                <li style="color: #333;">Mammografi (Deteksi Dini Kanker Payudara)</li>
+                <li style="color: #333;">Fluoroskopi dan Intervensi (Atas Indikasi Dokter)</li>
+              </ul>
+            </p>
+            <p style="margin-top: 20px;">
+                <span style="font-weight: 700; color: var(--brand);"><i class="bi bi-clock-fill"></i> Jam Layanan Radiologi: Senin - Sabtu (08.00 - 20.00 WIB)</span>
+            </p>
+        </div>
+    </div>
+  </div>
+  
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h4>Hubungi Kami</h4>
+        <p><i class="bi bi-telephone"></i> Telp: (0233) 8668019</p>
+        <p><i class="bi bi-whatsapp"></i> WA: +62 812-1115-1300</p>
+        <p><i class="bi bi-envelope"></i> Email: contact@rsdemo.com</p>
+      </div>
+      <div>
+        <h4>Mitra Kami</h4>
+        <p>BPJS Kesehatan</p>
+        <p>Admedika</p>
+        <p>Mitra Asuransi Lainnya</p>
+      </div>
+      <div>
+        <h4>RS Demo</h4>
+        <p><i class="bi bi-geo-alt-fill"></i> Jl. Raya Timur III No.875, Dawuan, Majalengka</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2025 Create by Team IT LivAsya
+    </div>
+  </footer>
+  
+</body>
+</html>

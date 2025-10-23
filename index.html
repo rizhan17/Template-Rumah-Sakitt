@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<title>RS Demo — Beranda</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<style>
+/* ====================================
+   0. CSS Variables & Reset
+   ==================================== */
+:root {
+    --brand: #007bff; /* Biru Primer */
+    --accent: #ffc107; /* Kuning Aksen */
+    --danger: #dc3545; /* Merah untuk IGD/Darurat */
+    --muted: #6c757d; /* Abu-abu untuk teks sekunder */
+    --bg-light: #f4f7ff; /* Background luar halaman */
+    --bg-white: #ffffff; /* Background konten utama */
+    --max-width: 1200px;
+    --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: var(--bg-light);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: var(--brand);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.2;
+    color: #333;
+    margin-top: 0;
+}
+
+.section {
+    padding: 40px 20px;
+    max-width: var(--max-width);
+    margin: 0 auto 30px;
+    background-color: var(--bg-white);
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+}
+
+.section h2 {
+    font-size: 2em;
+    margin-bottom: 25px;
+    text-align: center;
+    color: var(--brand);
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 8px;
+    display: inline-block;
+}
+
+/* ====================================
+   1. Navigation (Disesuaikan ke Kanan)
+   ==================================== */
+.nav {
+    background-color: var(--bg-white);
+    box-shadow: 0 2px 5px rgba(247, 244, 244, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--brand);
+}
+
+.brand img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Penyesuaian: Nav Center dipindahkan ke Kanan */
+.nav-center {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end; /* Semua menu didorong ke kanan */
+    padding-right: 20px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: #333;
+    padding: 10px 0;
+    font-weight: 500;
+    display: block;
+}
+
+.nav-links a:hover {
+    color: var(--brand);
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown a:first-child { 
+    position: relative;
+    padding-right: 15px;
+}
+
+.dropdown a:first-child::after {
+    content: '▼';
+    font-size: 0.7em;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s;
+}
+
+.dropdown:hover a:first-child::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--bg-white);
+    min-width: 180px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.1);
+    z-index: 1;
+    border-top: 3px solid var(--brand);
+    padding: 5px 0;
+    /* Penyesuaian: Dropdown rata kanan agar rapi */
+    right: 0;
+    left: auto;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.nav-right a {
+    color: var(--brand) !important;
+    font-weight: 700 !important;
+    border: 1px solid var(--brand);
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+.nav-right a:hover {
+    background-color: var(--brand);
+    color: var(--bg-white) !important;
+}
+
+.navbar-toggler, .hamburger {
+    display: none; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* ====================================
+   2. Hero Section (Background Foto)
+   ==================================== */
+.hero {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--brand);
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* GANTI FOTO BACKGROUND DI SINI */
+    background-image: url('https://placehold.co/400x400');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: var(--max-width);
+    width: 100%;
+    padding: 0 20px;
+    /* Penyesuaian: Konten didorong ke kiri agar ada efek kontras dengan background */
+    justify-content: flex-start; 
+}
+
+.hero-left {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+}
+
+.circle-wrap {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid var(--accent);
+    box-shadow: 0 0 0 10px rgba(255, 193, 7, 0.3);
+}
+.circle-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-copy {
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 500px;
+}
+.hero-copy h1 {
+    font-size: 2.8em;
+    color: white;
+}
+.hero-copy p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* ====================================
+   3. Statistik (Pasien Puas, Dokter, Tempat Tidur) - Ke Tengah + Gelombang Air
+   ==================================== */
+
+/* Animasi Gelombang Air (Wave Effect) */
+@keyframes wave {
+    0% { background-position: 0 100%; }
+    100% { background-position: 100% 100%; }
+}
+
+.services-grid-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 40px auto; /* Diposisikan di tengah */
+    padding: 0 20px;
+}
+.service-box {
+    text-align: center;
+    padding: 25px;
+    background-color: var(--bg-white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    overflow: hidden; /* Penting untuk menampung gelombang */
+    position: relative;
+    height: 250px; /* Tinggi tetap */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.service-box > * {
+    position: relative;
+    z-index: 2; /* Pastikan konten di atas gelombang */
+    color: rgb(3, 1, 1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.service-box::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.5) 20%, transparent 20%), 
+        linear-gradient(to top, var(--brand) 60%, transparent 60%);
+    background-size: 50% 100%;
+    background-repeat: repeat-x;
+    transform: rotate(10deg);
+    animation: wave 10s linear infinite alternate;
+    z-index: 1;
+}
+
+.service-box i {
+    font-size: 2.5em;
+    color: var(--accent); /* Warna ikon di atas gelombang */
+    margin-bottom: 10px;
+}
+.service-box h3 {
+    font-size: 1.1em;
+    color: rgb(255, 255, 255); /* Warna teks di atas gelombang */
+}
+.counter {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--accent); /* Warna angka */
+    display: block;
+    margin: 5px 0;
+}
+.service-box p {
+    font-size: 0.9em;
+    color: #f1f1f1;
+}
+
+
+/* ====================================
+   4. Quick Links / Layanan Cepat (Formasi 3x2)
+   ==================================== */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Kolom */
+    gap: 20px;
+    max-width: var(--max-width);
+    margin: 40px auto; 
+    padding: 0 20px;
+}
+
+.service-card {
+    background-color: var(--bg-white);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-bottom: 4px solid var(--brand);
+    /* Tinggi dibuat sama */
+    min-height: 150px; 
+}
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.service-card h3 {
+    font-size: 1.2em;
+    margin: 5px 0;
+    color: var(--brand);
+}
+.service-card p {
+    font-size: 0.9em;
+    color: var(--muted);
+}
+
+/* ====================================
+   5. Poliklinik (Carousel)
+   ==================================== */
+.pelayanan-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
+    max-width: 900px;
+    margin: 30px auto;
+    background-color: var(--bg-white);
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+}
+
+.sidebar {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--brand);
+    color: white;
+    border-radius: 8px;
+    min-width: 150px;
+}
+.sidebar i {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+.sidebar p {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.carousel-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.arrow {
+    background: var(--brand);
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition: background 0.3s;
+}
+.arrow:hover {
+    background: var(--accent);
+    color: #333;
+}
+
+.card {
+    flex-grow: 1;
+    text-align: center;
+    padding: 30px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--bg-white);
+}
+.card i {
+    font-size: 3em;
+    color: var(--danger);
+    margin-bottom: 10px;
+}
+.card h3 {
+    color: var(--brand);
+}
+
+/* ====================================
+   6. Jadwal Dokter
+   ==================================== */
+.jadwal-wrap {
+    text-align: center;
+    padding: 20px;
+}
+.jadwal-wrap img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ====================================
+   7. Berita Terbaru
+   ==================================== */
+.berita-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.berita-card {
+    background: var(--bg-white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+.berita-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+.berita-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.berita-card .info {
+    padding: 15px;
+}
+
+/* ====================================
+   8. Temukan Kami / Kontak
+   ==================================== */
+.temukan-wrap {
+    display: flex;
+    gap: 20px;
+}
+.map-wrap {
+    flex: 2;
+}
+.contact-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.contact-card {
+    padding: 20px;
+    background-color: var(--bg-light);
+    border: 1px solid #ddd;
+    border-left: 5px solid var(--brand);
+}
+.contact-card h4 {
+    color: var(--brand);
+    margin-bottom: 10px;
+}
+.mitra-logos {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.mitra-logos img {
+    width: 80px;
+    height: 40px;
+    object-fit: contain;
+    opacity: 0.7;
+}
+
+/* ====================================
+   9. Footer & Copyright
+   ==================================== */
+.site-footer {
+    background-color: #343a40;
+    color: white;
+    padding: 30px 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    border-radius: 10px 10px 0 0;
+}
+.footer-col {
+    flex: 1 1 200px;
+    padding: 10px;
+}
+.footer-col strong {
+    color: var(--accent);
+    font-size: 1.1em;
+}
+.footer-col a {
+    color: white;
+    opacity: 0.8;
+}
+.footer-col a:hover {
+    color: var(--accent);
+    opacity: 1;
+}
+
+.copyright-strip {
+    background-color: #212529;
+    color: var(--muted);
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 0.8em;
+}
+
+/* ====================================
+   10. Responsiveness
+   ==================================== */
+@media (max-width: 992px) {
+    /* Menu Mobile */
+    .nav-center, .nav-right {
+        display: none;
+    }
+    .navbar-toggler, .hamburger {
+        display: block;
+    }
+
+    /* Hero */
+    .hero {
+        height: auto;
+        padding: 40px 20px;
+    }
+    .hero-left {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    .hero-copy {
+        text-align: center;
+        max-width: 100%;
+    }
+    .hero-copy div {
+        justify-content: center;
+    }
+
+    /* Statistik (3x1) */
+    .services-grid-stats {
+        grid-template-columns: 1fr;
+    }
+    /* Quick Links (3x2 menjadi 2x3) */
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Lainnya */
+    .pelayanan-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .sidebar {
+        min-width: 100%;
+    }
+    .carousel-container {
+        width: 100%;
+    }
+    .temukan-wrap {
+        flex-direction: column;
+    }
+    .berita-grid {
+        grid-template-columns: 1fr;
+    }
+    .site-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+@media (max-width: 576px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    /* Pastikan di file index.html */
+/* Tambahkan CSS ini ke bagian <style> */
+.feature-link {
+    text-decoration: none; /* Hilangkan garis bawah */
+    color: inherit; /* Warisi warna teks dari parent */
+    display: block; /* Penting! Jadikan tag <a> mengambil seluruh ruang kotak */
+}
+
+/* Jika Anda ingin menambahkan efek hover pada kotak: */
+.feature-link .feature-box {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-link:hover .feature-box {
+    transform: translateY(-5px); /* Efek naik sedikit saat dihover */
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2); /* Bayangan biru yang lebih menonjol */
+}
+}
+.stat-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  background: linear-gradient(to bottom, #f8e8d8 0%, #ffffff 70%);
+  font-family: 'Poppins', sans-serif;
+}
+
+</style>
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" role="banner">
+  <div class="nav-inner">
+    <a class="brand" href="#home">
+      <img src="https://placehold.co/400x400" alt="logo">
+      <div class="name">RS Demo</div>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button> 
+    <div class="nav-center">
+      <nav class="nav-links" aria-label="Main navigation">
+        <div class=><a href="#home">Beranda</a></div>
+
+        <div class="dropdown">
+          <a href="#layanan">Pelayanan</a>
+          <div class="dropdown-content">
+            <a class="nav-link" href="igd.html">IGD</a>
+            <a class="nav-link" href="rawat1.html">Rawat Jalan</a>
+            <a class="nav-link" href="rawat2.html">Rawat Inap</a>
+            <a class="nav-link" href="radiologi.html">Radiologi</a>
+            <a class="nav-link" href="laboratorium.html">Laboratorium</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a href="#cari-dokter">Cari Dokter</a>
+          <div class="dropdown-content">
+            <a href="dokter.html">Dokter</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a href="#berita">Berita</a>
+          <div class="dropdown-content">
+            <a href="kategori-berita.html">Kategori Berita</a>
+            <a href="berita.html">Berita</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a href="#fasilitas">Fasilitas</a>
+          <div class="dropdown-content">
+            <a href="fasilitas-unggulan.html">Fasilitas Unggulan</a>
+            <a href="fasilitas-lainya.html">Fasilitas Lainnya</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a href="#rs-menu">RS Demo</a>
+          <div class="dropdown-content">
+            <a href="tentang-kami.html">Tentang Kami</a>
+            <a href="galeri.html">Galeri</a>
+            <a href="mitra-kami.html">Mitra Kami</a>
+            <a href="faq.html">FAQ</a>
+            <a href="syarat&ketentuan.html">Syarat & Ketentuan</a>
+            <a href="kebijakan-privasi.html">Kebijakan Privasi</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="nav-right">
+      <a href="karir.html" style="text-decoration:none;color:var(--muted);font-weight:700">Karir</a>
+    </div>
+
+    <button class="hamburger" aria-label="menu" onclick="toggleMobile()">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobileMenu" style="display:none; max-width:var(--max-width); margin:0 auto; padding:12px 20px;">
+    <nav style="display:flex;flex-direction:column;gap:8px;">
+      <a href="#home">Beranda</a>
+      <details><summary>Pelayanan</summary>
+        <a href="igd.html">IGD</a>
+        <a href="rawat1.html">Rawat Jalan</a>
+        <a href="rawat2.html">Rawat Inap</a>
+        <a href="radiologi.html">Radiologi</a>
+        <a href="laboratorium.html">Laboratorium</a>
+      </details>
+      <details><summary>Cari Dokter</summary><a href="dokter.html">Dokter</a></details>
+      <details><summary>Berita</summary><a href="kategori-berita.html">Kategori Berita</a><a href="#berita">Berita</a></details>
+      <details><summary>Fasilitas</summary><a href="fasilitas-unggulan.html">Fasilitas Unggulan</a><a href="#fasilitas-lain">Fasilitas Lainnya</a></details>
+      <details><summary>RS Demo</summary>
+        <a href="tentang-kami.html">Tentang Kami</a><a href="galeri.html">Galeri</a><a href="mitra.html">Mitra Kami</a><a href="faq.html">FAQ</a>
+      </details>
+      <a href="karir.html">Karir</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero" aria-label="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="circle-effects" aria-hidden="true">
+    <div class="amb a1"></div>
+    <div class="amb a2"></div>
+    <div class="amb a3"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="circle-wrap">
+        <img src="https://placehold.co/400x400" alt="Foto RS">
+      </div>
+      <div class="hero-copy">
+        <h1>Selamat Datang di RS Demo</h1>
+        <p>Pusat layanan kesehatan terbaik dengan fasilitas modern dan tenaga medis profesional.</p>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a href="daftar.html" style="background:var(--brand);color:white;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700">Daftar Sekarang</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <!-- Beranda lower: Stats (Dokter / Pasien Puas / Tempat Tidur) -->
+   
+<section class="section" id="layanan-tambahan">
+  <h2></h2>
+  <div class="services-grid">
+    <div class="service-box">
+      <i class="fa-solid fa-face-smile"></i>
+      <h3>Pasien Puas</h3>
+      <span class="counter" data-target="9999">0</span>
+      <p>Kepuasan pasien prioritas kami</p>
+    </div>
+    <div class="service-box">
+      <i class="fa-solid fa-user-doctor"></i>
+      <h3>Dokter Profesional</h3>
+      <span class="counter" data-target="9999">0</span>
+      <p>Tenaga medis berpengalaman</p>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-bed-pulse"></i>
+      <h3>Fasilitas Tempat Tidur</h3>
+      <span class="counter" data-target="9999">0</span>
+      <p>Ruang perawatan memadai</p>
+    </div>
+  </div>
+</section>
+<script>
+  const counters = document.querySelectorAll('.counter');
+  counters.forEach(counter => {
+    const updateCount = () => {
+      const target = +counter.getAttribute('data-target');
+      const count = +counter.innerText;
+      const increment = target / 200; // kecepatan
+      if(count < target){
+        counter.innerText = Math.ceil(count + increment);
+        setTimeout(updateCount, 20);
+      } else {
+        counter.innerText = target;
+      }
+    }
+    updateCount();
+  });
+</script>
+  
+
+
+  <div class="pelayanan-container">
+    <!-- Sidebar Kiri -->
+    <div class="sidebar">
+      <i class="bi bi-heart-pulse-fill"></i>
+      <p>Poliklinik</p>
+    </div>
+
+    <!-- Carousel -->
+    <div class="carousel-container">
+      <div class="arrow left" onclick="prevSlide()">&#10094;</div>
+
+      <div class="card" id="card">
+        <i class="bi bi-heart-pulse-fill"></i>
+        <h3>Poli Paru</h3>
+      </div>
+
+      <div class="arrow right" onclick="nextSlide()">&#10095;</div>
+    </div>
+  </div>
+</section>
+
+<script>
+const cards = [
+  { icon: "fa-solid fa-lungs", title: "Poli Paru" },
+  { icon: "bi bi-radioactive", title: "Radiologi" },
+  { icon: "fa-solid fa-microscope", title: "Laboratorium" },
+  { icon: "fa-solid fa-kit-medical", title: "IGD" }
+  
+];
+
+let current = 0;
+const card = document.getElementById("card");
+
+function updateCard() {
+  card.innerHTML = `
+    <i class="${cards[current].icon}"></i>
+    <h3>${cards[current].title}</h3>
+  `;
+}
+
+function nextSlide() {
+  current = (current + 1) % cards.length;
+  updateCard();
+}
+
+function prevSlide() {
+  current = (current - 1 + cards.length) % cards.length;
+  updateCard();
+}
+</script>
+
+  <div class="services-grid">
+    <!-- Baris 1 -->
+      <div class="service-card"> 
+      <i class="fa-solid fa-kit-medical" style="font-size:2rem; color:#00A8E8;"></i>
+      <h3>IGD 24 Jam</h3>
+      <p>Layanan darurat 24/7</p>
+    </div>
+
+    <div class="service-card">
+      <i class="fa-solid fa-user-doctor" style="font-size:2rem; color:#00A8E8;"></i>
+      <h3>Dokter Profesional</h3>
+      <p>Tenaga medis berpengalaman</p>
+    </div>
+
+    <div class="service-card">
+      <i class="fa-solid fa-face-smile" style="font-size:2rem; color:#00A8E8;"></i>
+      <h3>Pasien Puas</h3>
+      <p>Pelayanan optimal & nyaman</p>
+    </div>
+
+    
+    <div class="service-card">
+      <i class="fa-solid fa-bed-pulse" style="font-size:2rem; color:#00A8E8;"></i>
+      <h3>Fasilitas Tempat Tidur</h3>
+      <p>Ruang inap modern</p>
+    </div>
+
+    <div class="service-card">
+      <i class="bi bi-radioactive" style="font-size:2rem; color:#00A8E8;"></i>
+      <h3>Radiologi</h3>
+      <p>Pemeriksaan X-Ray & USG</p>
+    </div>
+
+
+    <div class="service-card">
+      <i class="fa-solid fa-microscope" style="font-size:2rem; color:#00A8E8;"></i>
+      <h3>laboratorium</h3>
+      <p>layanan tes & analisa medis dengan hasil cepat dan terpercaya</p>
+      
+    </div>
+  </div>
+</section>
+<style>
+  
+
+</style>
+
+
+  <!-- Jadwal Dokter -->
+  <section class="section" id="jadwal">
+    <h2>Jadwal Dokter</h2>
+    <div class="jadwal-wrap">
+      <img src="https://placehold.co/400x400" alt="Jadwal Dokter">
+    </div>
+  </section>
+
+  <!-- Berita Terbaru -->
+  <section class="section" id="berita">
+    <h2>Berita Terbaru</h2>
+    <div class="berita-grid">
+      <div class="berita-card">
+        <img src="https://placehold.co/400x400" alt="">
+        <div class="info">
+          <h4 style="margin:4px 0">Tips Sehat Musim Hujan</h4>
+          <p style="color:var(--muted);margin:4px 0">Cara menjaga keluarga tetap sehat saat hujan.</p>
+          <a href="https://instagram.com" target="_blank" style="text-decoration:none;color:var(--brand);font-weight:700">View on Instagram</a>
+        </div>
+      </div>
+
+      <div class="berita-card">
+        <img src="https://placehold.co/400x400" alt="">
+        <div class="info">
+          <h4 style="margin:4px 0">Peningkatan Fasilitas</h4>
+          <p style="color:var(--muted);margin:4px 0">Upgrade ruang rawat & fasilitas penunjang.</p>
+          <a href="https://instagram.com" target="_blank" style="text-decoration:none;color:var(--brand);font-weight:700">View on Instagram</a>
+        </div>
+      </div>
+
+      <div class="berita-card">
+        <img src="https://placehold.co/400x400" alt="">
+        <div class="info">
+          <h4 style="margin:4px 0">Vaksinasi & Layanan Baru</h4>
+          <p style="color:var(--muted);margin:4px 0">Informasi layanan vaksinasi terbaru.</p>
+          <a href="https://instagram.com" target="_blank" style="text-decoration:none;color:var(--brand);font-weight:700">View on Instagram</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px"><a href="#berita-lengkap" style="text-decoration:none;color:var(--muted);border:1px solid #eef6fb;padding:8px 12px;border-radius:8px">Berita Selengkapnya</a></div>
+
+    <div id="berita-lengkap" style="margin-top:18px">
+      <h3>Berita Selengkapnya</h3>
+      <p style="color:var(--muted)">Daftar artikel & berita akan ditampilkan di sini — placeholder untuk konten lengkap.</p>
+    </div>
+  </section>
+
+  <!-- Temukan Kami (maps) + Mitra + Hubungi -->
+  <section class="section" id="temukan-kami">
+    <h2>Temukan Kami</h2>
+    <div class="temukan-wrap">
+      <div class="map-wrap">
+        <!-- Ganti src iframe dengan embed Google Maps yang valid jika perlu -->
+        <iframe style="width:100%;height:360px;border:0" src="https://www.google.com/maps/embed?pb=!1m18!..." loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+      <div class="contact-side">
+        <div class="card contact-card">
+          <h4>Hubungi Kami</h4>
+          <p style="color:var(--muted);margin:6px 0">WA: +62 812-1115-1300</p>
+          <p style="color:var(--muted);margin:6px 0">Tel: (0233) 8668019</p>
+          <p style="color:var(--muted);margin:6px 0">Email: contact@rsdemo.id</p>
+        </div>
+
+        <div class="card" id="mitra">
+          <h4>Mitra Kami</h4>
+          <div style="height:12px"></div>
+          <div class="mitra-logos">
+            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=300&q=60" alt="mitra1">
+            <img src="https://images.unsplash.com/photo-1519331379823-0ff50f8d6b3b?auto=format&fit=crop&w=300&q=60" alt="mitra2">
+            <img src="https://images.unsplash.com/photo-1523475496153-3d6ccf0f5fb1?auto=format&fit=crop&w=300&q=60" alt="mitra3">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-col">
+      <strong>RS Demo</strong>
+      <div style="color:var(--muted);margin-top:6px">Jl. Raya Timur III No.875, Dawuan, Majalengka</div>
+    </div>
+
+    <div class="footer-col">
+      <strong>Kontak</strong>
+      <div style="color:var(--muted);margin-top:6px">WA: +62 812-1115-1300 • Tel: (0233) 8668019</div>
+    </div>
+
+    <div class="footer-col">
+      <strong>Mitra Kami</strong>
+      <div style="color:var(--muted);margin-top:6px">[Logo partner placeholder]</div>
+    </div>
+
+    <div class="footer-col" style="display:flex;flex-direction:column;align-items:flex-end;">
+      <strong>Sosial</strong>
+        <div class="socials">
+          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+    </div>
+  </footer>
+
+  <div class="copyright-strip">© 2025 Created by Team IT RS Demo</div>
+</main>
+
+<script>
+// mobile menu toggle
+function toggleMobile(){
+  const el = document.getElementById('mobileMenu');
+  if(!el) return;
+  el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+
+// counters animate when visible
+function animateNumber(el){
+  const target = +el.getAttribute('data-target') || 0;
+  if(el.dataset.animated) return;
+  let current = 0;
+  const duration = 1200;
+  const stepTime = Math.max(8, Math.floor(duration / Math.max(1, target)));
+  const increment = Math.max(1, Math.floor(target / (duration / stepTime)));
+  el.dataset.animated = 'true';
+  const t = setInterval(()=>{
+    current += increment;
+    if(current >= target){
+      el.textContent = target.toLocaleString('id');
+      clearInterval(t);
+    } else {
+      el.textContent = current.toLocaleString('id');
+    }
+  }, stepTime);
+}
+function runCountersIfVisible(){
+  document.querySelectorAll('.num').forEach(el=>{
+    const rect = el.getBoundingClientRect();
+    if(rect.top < window.innerHeight && rect.bottom >= 0 && !el.dataset.animated){
+      animateNumber(el);
+    }
+  });
+}
+window.addEventListener('scroll', runCountersIfVisible);
+window.addEventListener('load', runCountersIfVisible);
+
+// poliklinik interactions
+const poliList = document.getElementById('poliList');
+const poliItems = document.querySelectorAll('.poli-item');
+const poliPrev = document.getElementById('poliPrev');
+const poliNext = document.getElementById('poliNext');
+const poliTitle = document.getElementById('poliTitle');
+const poliDesc = document.getElementById('poliDesc');
+
+const poliData = {
+  'poli-gigi': {title:'Poli Gigi', desc:'Perawatan gigi & mulut: pembersihan, tambal, cabut ringan.'},
+  'poli-bedah': {title:'Poli Bedah', desc:'Konsultasi & tindakan bedah elektif & darurat.'},
+  'poli-anak': {title:'Poli Anak', desc:'Pelayanan kesehatan anak & imunisasi.'},
+  'poli-kb': {title:'Poli KB', desc:'Konseling & layanan kontrasepsi.'},
+  'poli-mata': {title:'Poli Mata', desc:'Pemeriksaan refraksi & perawatan mata.'}
+};
+
+poliItems.forEach((it, idx) => {
+  it.addEventListener('click', ()=>{
+    poliItems.forEach(i=>i.classList.remove('active'));
+    it.classList.add('active');
+    const key = it.dataset.target;
+    if(poliData[key]){
+      poliTitle.textContent = poliData[key].title;
+      poliDesc.textContent = poliData[key].desc;
+    }
+    // scroll into view for detail
+    document.getElementById('poliDetail').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+poliPrev.addEventListener('click', ()=> poliList.scrollBy({left:-220, behavior:'smooth'}));
+poliNext.addEventListener('click', ()=> poliList.scrollBy({left:220, behavior:'smooth'}));
+
+// respect reduced motion
+if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.hero-bg').forEach(e => e.style.animation = 'none');
+  document.querySelectorAll('.amb').forEach(e => e.style.animation = 'none');
+}
+</script>
+</body>
+</html>
